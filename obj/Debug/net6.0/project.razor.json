@@ -16331,6 +16331,11 @@
       "FilePath": "f:\\Dotnet\\Views\\Home\\Privacy.cshtml",
       "TargetPath": "Views\\Home\\Privacy.cshtml",
       "FileKind": "mvc"
+    },
+    {
+      "FilePath": "f:\\Dotnet\\Views\\Student\\Add.cshtml",
+      "TargetPath": "Views\\Student\\Add.cshtml",
+      "FileKind": "mvc"
     }
   ],
   "SerializationFormat": "0.2"

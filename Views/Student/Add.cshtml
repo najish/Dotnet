@@ -1,0 +1,24 @@
+@model StudentViewModel
+@{
+
+}
+
+<form method="post">
+    <div asp-validation-summary="All">
+        <div>
+            <label asp-for="Name"></label>
+            <input asp-for="Name">
+            <span asp-validation-for="Name"></span>
+        </div>
+
+        <div>
+            <label asp-for="Address"></label>
+            <input asp-for="Address">
+            <span asp-validation-for="Address"></span>
+        </div>
+
+        <div>
+            <input type="submit" value="Add Student" class="btn btn-primary">
+        </div>
+    </div>
+</form>

@@ -1,4 +1,5 @@
 using Dotnet.Data;
+using Dotnet.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,8 +9,10 @@ builder.Services.AddControllersWithViews();
 var services = builder.Services;
 var Configuration = builder.Configuration;
 
-services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefualtConnection")));
 
+
+services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefualtConnection")));
+services.AddScoped<IStudentRepository,StudentRepository>();
 
 var app = builder.Build();
 
