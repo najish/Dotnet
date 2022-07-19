@@ -16313,6 +16313,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "f:\\Dotnet\\Views\\Student\\Delete.cshtml",
+      "TargetPath": "Views\\Student\\Delete.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "f:\\Dotnet\\Views\\Shared\\_Layout.cshtml",
       "TargetPath": "Views\\Shared\\_Layout.cshtml",
       "FileKind": "mvc"

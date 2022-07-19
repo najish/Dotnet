@@ -56,4 +56,12 @@ public class StudentRepository : IStudentRepository
         context.Students.Update(student);
         await context.SaveChangesAsync();
     }
+
+    public async Task DeleteStudentAsync(StudentViewModel model)
+    {
+        var student = context.Students.Find(model.Id);
+        if(student != null)
+            context.Students.Remove(student);
+        await context.SaveChangesAsync();
+    }
 }

@@ -50,4 +50,19 @@ public class StudentController : Controller
         await studentRepo.EditStudentAsync(model);
         return RedirectToAction("GetStudents");
     }
+
+
+    [HttpGet]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var model = await studentRepo.GetStudentAsync(id);
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Delete(StudentViewModel student)
+    {
+        await studentRepo.DeleteStudentAsync(student);
+        return RedirectToAction("GetStudents");
+    }
 }

@@ -1,0 +1,13 @@
+@model StudentViewModel
+
+@{
+    ViewData["Title"] = "Delete Student";
+}
+
+<form method="post">
+    <h1>Are you sure to delete this student ??</h1>
+    <div>
+        <input type="submit" class="btn btn-danger" value="Confirm">
+        <a asp-action="GetStudents" class="btn btn-dark">Cancel</a>
+    </div>
+</form>
