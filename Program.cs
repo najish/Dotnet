@@ -13,7 +13,9 @@ var Configuration = builder.Configuration;
 
 
 services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefualtConnection")));
-services.AddIdentity<IdentityUser,IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+services.AddIdentity<IdentityUser,IdentityRole>(options => 
+{
+}).AddEntityFrameworkStores<AppDbContext>();
 services.AddScoped<IStudentRepository,StudentRepository>();
 
 var app = builder.Build();

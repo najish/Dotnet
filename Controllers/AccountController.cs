@@ -82,4 +82,12 @@ public class AccountController : Controller
         await signInManager.SignOutAsync();
         return RedirectToAction("GetStudents","Student");
     }
+
+
+    [HttpGet]
+    public async Task<IActionResult> ForgetPassword()
+    {
+        
+        return View();
+    }
 }
