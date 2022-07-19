@@ -1,7 +1,15 @@
+using Dotnet.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+var services = builder.Services;
+var Configuration = builder.Configuration;
+
+services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefualtConnection")));
+
 
 var app = builder.Build();
 
@@ -17,7 +25,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
