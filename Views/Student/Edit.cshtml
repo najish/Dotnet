@@ -1,10 +1,17 @@
 @model StudentViewModel
+
 @{
-    ViewData["Title"] = "Add Student";
+    ViewData["Title"] = "Edit Student";
 }
-<h1>Add Student</h1>
+
+
+<h1>Edit Student</h1>
 <form method="post">
     <div asp-validation-summary="All">
+        <div>
+            <label asp-for="Id"></label>
+            <input asp-for="Id" readonly>
+        </div>
         <div>
             <label asp-for="Name"></label>
             <input asp-for="Name">

@@ -16298,6 +16298,11 @@
   "RootNamespace": "Dotnet",
   "Documents": [
     {
+      "FilePath": "f:\\Dotnet\\Views\\Student\\Edit.cshtml",
+      "TargetPath": "Views\\Student\\Edit.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "f:\\Dotnet\\Views\\_ViewStart.cshtml",
       "TargetPath": "Views\\_ViewStart.cshtml",
       "FileKind": "mvc"
@@ -16325,6 +16330,11 @@
     {
       "FilePath": "f:\\Dotnet\\Views\\Home\\Index.cshtml",
       "TargetPath": "Views\\Home\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "f:\\Dotnet\\Views\\Student\\GetStudents.cshtml",
+      "TargetPath": "Views\\Student\\GetStudents.cshtml",
       "FileKind": "mvc"
     },
     {

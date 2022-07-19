@@ -1,0 +1,42 @@
+@model List<StudentViewModel>
+@{
+    ViewData["Title"] = "List of all students";
+}
+
+<h1>List of students</h1>
+
+
+<h5>
+    <a asp-action="Add">Create Student</a>
+</h5>
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Address</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if(Model.Any())
+        {
+            @foreach(var student in Model)
+            {
+                <tr>
+                    <td>@student.Id</td>
+                    <td>@student.Name</td>
+                    <td>@student.Address</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@student.Id">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@student.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <h6>Don't have any student records.</h6>
+        }
+
+    </tbody>
+</table>

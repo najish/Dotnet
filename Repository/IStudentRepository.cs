@@ -1,8 +1,13 @@
 using Dotnet.ViewModels;
-
+using Dotnet.Models;
+using System.Collections.Generic;
 namespace Dotnet.Repository;
 
 public interface IStudentRepository
 {
-    void AddStudent(StudentViewModel student);
+    Task AddStudentAsync(StudentViewModel student);
+    Task<List<StudentViewModel>> GetStudentsAsync();
+    Task<StudentViewModel> GetStudentAsync(int id);
+    Task EditStudentAsync(StudentViewModel model);
+
 }
