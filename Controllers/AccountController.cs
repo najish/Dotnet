@@ -1,4 +1,5 @@
 using Dotnet.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Dotnet.Controllers;
 
 
+
+[Authorize]
 public class AccountController : Controller
 {
     private readonly UserManager<IdentityUser> userManager;
@@ -18,13 +21,15 @@ public class AccountController : Controller
         this.roleManager = roleManager;
     }
 
+
+    [AllowAnonymous]
     [HttpGet]
     public IActionResult Register()
     {
         return View();
     }
 
-
+    [AllowAnonymous]
     [HttpPost]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
@@ -85,13 +90,16 @@ public class AccountController : Controller
 
 
     [HttpGet]
-    public IActionResult Login()
+    [AllowAnonymous]
+    public IActionResult Login(string returnUrl)
     {
+        ViewData["ReturnUrl"] = returnUrl;
         return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Login(LoginViewModel model)
+    [AllowAnonymous]
+    public async Task<IActionResult> Login(LoginViewModel model,string returnUrl)
     {
         var user = await userManager.FindByEmailAsync(model.Email);
         if(user == null)
@@ -102,7 +110,11 @@ public class AccountController : Controller
 
         var result = await signInManager.PasswordSignInAsync(user,model.Password,model.RememberMe,false);
         if(result.Succeeded)
+        {
+            if(Url.IsLocalUrl(returnUrl))
+                return Redirect(returnUrl);
             return RedirectToAction("GetStudents","Student");
+        }
         ModelState.AddModelError("","Password is wrong try again :-)");
         return View(model);
     }
@@ -229,10 +241,4 @@ public class AccountController : Controller
     }
 
 
-    [HttpGet]
-    public async Task<IActionResult> ForgetPassword()
-    {
-
-        return View();
-    }
 }

@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Login";
+    string returnUrl = (ViewData["ReturnUrl"]).ToString();
 }
 
 <form method="post">
@@ -27,7 +28,7 @@
         </div>
 
         <div>
-            <input type="submit" value="Login" class="btn btn-primary">
+            <input type="submit" value="Login" asp-route-returnUrl ="@returnUrl" class="btn btn-primary">
             <a class="btn btn-dark" asp-action="GetStudents" asp-controller="Student">Cancel</a>
         </div>
     </div>

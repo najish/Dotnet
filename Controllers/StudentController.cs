@@ -1,10 +1,12 @@
 using Dotnet.Models;
 using Dotnet.Repository;
 using Dotnet.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dotnet.Controllers;
 
+[Authorize]
 public class StudentController : Controller
 {
     private readonly IStudentRepository studentRepo;
@@ -13,12 +15,13 @@ public class StudentController : Controller
         this.studentRepo = studentRepo;
     }
 
-
+    [AllowAnonymous]
     public async Task<IActionResult> GetStudents()
     {
         var list = await studentRepo.GetStudentsAsync();
         return View(list);
     }
+
 
     [HttpGet]
     public IActionResult Add()
