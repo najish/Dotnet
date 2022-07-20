@@ -1,4 +1,5 @@
-@model IdentityUser
+@inject UserManager<IdentityUser> userManager
+@model EditUserViewModel
 
 
 @{
@@ -12,20 +13,22 @@
 <form method="post">
     <div asp-validation-summary="All">
         <div>
-            <label asp-for="@Model.Id"></label>
-            <input asp-for="@Model.Id" readonly>
+            <label asp-for="@Model.User.Id"></label>
+            <input asp-for="@Model.User.Id" readonly>
         </div>
         <div>
-            <label asp-for="@Model.Email"></label>
-            <input asp-for="@Model.Email">
-            <span asp-validation-for="@Model.Email"></span>
+            <label asp-for="@Model.User..Email"></label>
+            <input asp-for="@Model.User.Email">
+            <span asp-validation-for="@Model.User.Email"></span>
         </div>
         <div>
-            <label asp-for="@Model.UserName"></label>
-            <input asp-for="@Model.UserName">
-            <span asp-validation-for="@Model.UserName"></span>
+            <label asp-for="@Model.User.UserName"></label>
+            <input asp-for="@Model.User.UserName">
+            <span asp-validation-for="@Model.User.UserName"></span>
         </div>
         <div>
+            <input asp-for="@Model.EnrolledRoles" hidden>
+            <input asp-for="@Model.Roles" hidden>
             <input type="submit" class="btn btn-primary" value="Edit User">
             <a class="btn btn-dark" asp-action="UserList">Cancel</a>
         </div>
@@ -33,6 +36,44 @@
     </div>
 </form>
 
-<div>
-    <a href="#">Change Password</a>
-</div>
+
+<h3>List of role belongs to @Model.User.Email</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Role Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if(Model.Roles.Any())
+        {
+            <form method="post">
+                <input asp-for="@Model.User.Id" hidden>
+                <input asp-for="@Model.User.Email" hidden>
+                <input asp-for="@Model.User.UserName" hidden>
+                <input asp-for="@Model.Roles" hidden>
+                <input asp-for="@Model.EnrolledRoles" hidden>
+                @for(int i = 0 ; i < Model.Roles.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            <input id="@Model.Roles[i]" asp-for="@Model.EnrolledRoles[i]"> 
+                            <label for="@Model.Roles[i]" asp-for="@Model.EnrolledRoles[i]">@Model.Roles[i]</label>
+                        </td>
+                    </tr>
+                }
+                <input type="submit" value="Update Role" class="btn btn-success">
+            </form>
+
+        }
+        else 
+        {
+            <h6>There is no role to enroll</h6>
+            <div>
+                <a asp-action="CreateRole" class="btn btn-primary" title="Craete role to enroll users">Create Role</a> | 
+                <a asp-action="UserList" class="btn btn-dark">Back To UserList</a>
+            </div>
+        }
+    </tbody>
+</table>

@@ -93,9 +93,10 @@ public class AdministrationController : Controller
     
 
     [HttpGet]
-    public IActionResult DeleteRole(string id)
+    public async Task<IActionResult> DeleteRole(string id)
     {
-        return View();
+        var role = await roleManager.FindByIdAsync(id);
+        return View(role);
     }
 
     [HttpPost]

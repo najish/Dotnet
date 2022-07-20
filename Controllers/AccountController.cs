@@ -10,10 +10,12 @@ public class AccountController : Controller
 {
     private readonly UserManager<IdentityUser> userManager;
     private readonly SignInManager<IdentityUser> signInManager;
-    public AccountController(UserManager<IdentityUser> userManager,SignInManager<IdentityUser> signInManager)
+    private readonly RoleManager<IdentityRole> roleManager;
+    public AccountController(UserManager<IdentityUser> userManager,SignInManager<IdentityUser> signInManager,RoleManager<IdentityRole> roleManager)
     {
         this.signInManager = signInManager;
         this.userManager = userManager;
+        this.roleManager = roleManager;
     }
 
     [HttpGet]
@@ -128,23 +130,92 @@ public class AccountController : Controller
     public async Task<IActionResult> EditUser(string id)
     {
         var user = await userManager.FindByIdAsync(id);
+        var roles = await (roleManager.Roles).ToListAsync();
+        var list = new List<string>();
+        // foreach(var role in roles)
+        // {
+        //     list.Add(role.Name);
+        // }
+        var enroll = new List<bool>();
 
-        return View(user);
+
+        for(int i = 0; i < roles.Count; i++)
+        {
+            list.Add(roles[i].Name);
+            var result = await userManager.IsInRoleAsync(user,roles[i].Name); 
+            enroll.Add(result);
+        }
+        
+
+        
+        var model = new EditUserViewModel
+        {
+            User = user,
+            Roles = list,
+            EnrolledRoles = enroll
+        };
+        return View(model);
     }
 
 
     [HttpPost]
-    public async Task<IActionResult> EditUser(IdentityUser model)
+    public async Task<IActionResult> EditUser(EditUserViewModel model)
     {
-        var user = await userManager.FindByIdAsync(model.Id);
+        var user = await userManager.FindByIdAsync(model.User.Id);
 
 
         if(user == null)
-            return View(user);
-        user.Email = model.Email;
-        user.UserName = model.UserName;
-        await userManager.UpdateAsync(user);
-        return RedirectToAction("UserList");
+        {   
+            ModelState.AddModelError("","user not found");
+            return View(model);
+        }
+        user.Email = model.User.Email;
+        user.UserName = model.User.UserName;
+        var reuslt = await userManager.UpdateAsync(user);
+
+        if(reuslt.Succeeded)
+        {
+
+            for(int i = 0; i < model.EnrolledRoles.Count; i++)
+            {
+                if(model.EnrolledRoles[i])
+                {
+                    var res = await userManager.IsInRoleAsync(model.User,model.Roles[i]);
+                    if(res)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        var roleResult = await userManager.AddToRoleAsync(model.User,model.Roles[i]);
+
+                        if(roleResult.Succeeded == false)
+                        {
+                            foreach(var error in roleResult.Errors)
+                            {
+                                ModelState.AddModelError("",error.Description);
+                            }
+                        }
+                    }
+                }                
+            }
+            return RedirectToAction("UserList");
+        }
+
+        foreach(var error in reuslt.Errors)
+        {
+            ModelState.AddModelError("",error.Description);
+            if(model.EnrolledRoles == null)
+            {
+                model.EnrolledRoles = new List<bool>();
+                
+            }
+            if(model.Roles == null)
+            {
+                model.Roles = new List<string>();
+            }
+        }
+        return View(model);
     }
 
 

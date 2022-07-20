@@ -1,15 +1,22 @@
 @model List<IdentityRole>
 
+@{
+    ViewData["Title"] = "Roles List";
+}
+
 <h1>
     <a asp-action="CreateRole">Create Role</a>
 </h1>
 
 <table>
     <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-        </tr>
+        @if(Model.Any())
+        {
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+            </tr>
+        }
     </thead>
     <tbody>
         @if(Model.Any())
@@ -21,7 +28,7 @@
                     <td>@role.Name</td>
                     <td>
                         <a asp-action="EditRole" asp-route-id="@role.Id">Edit</a> | 
-                        <a asp-action="DeleteRole" asp-route-id="@role.Name">Delete</a>
+                        <a asp-action="DeleteRole" asp-route-id="@role.Id">Delete</a>
                     </td>
                 </tr>
             }
