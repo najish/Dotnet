@@ -16318,8 +16318,18 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "f:\\Dotnet\\Views\\Administration\\EditRole.cshtml",
+      "TargetPath": "Views\\Administration\\EditRole.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "f:\\Dotnet\\Views\\Account\\UserList.cshtml",
       "TargetPath": "Views\\Account\\UserList.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "f:\\Dotnet\\Views\\Administration\\CreateRole.cshtml",
+      "TargetPath": "Views\\Administration\\CreateRole.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -16358,6 +16368,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "f:\\Dotnet\\Views\\Administration\\DeleteRole.cshtml",
+      "TargetPath": "Views\\Administration\\DeleteRole.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "f:\\Dotnet\\Views\\Student\\Add.cshtml",
       "TargetPath": "Views\\Student\\Add.cshtml",
       "FileKind": "mvc"
@@ -16365,6 +16380,11 @@
     {
       "FilePath": "f:\\Dotnet\\Views\\Account\\EditUser.cshtml",
       "TargetPath": "Views\\Account\\EditUser.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "f:\\Dotnet\\Views\\Administration\\RolesList.cshtml",
+      "TargetPath": "Views\\Administration\\RolesList.cshtml",
       "FileKind": "mvc"
     },
     {
