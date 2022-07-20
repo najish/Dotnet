@@ -32,8 +32,15 @@ public class StudentController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(StudentViewModel model)
     {
-        await studentRepo.AddStudentAsync(model);
-        return RedirectToAction("GetStudents");
+
+        if(ModelState.IsValid)
+        {
+            await studentRepo.AddStudentAsync(model);
+            return RedirectToAction("GetStudents");
+        }
+
+        ModelState.AddModelError("","Failed to add");
+        return View(model);
     }
 
     [HttpGet]
@@ -50,8 +57,14 @@ public class StudentController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(StudentViewModel model)
     {
-        await studentRepo.EditStudentAsync(model);
-        return RedirectToAction("GetStudents");
+        if(ModelState.IsValid)
+        {
+            await studentRepo.EditStudentAsync(model);
+            return RedirectToAction("GetStudents");
+        }
+
+        ModelState.AddModelError("","Failed to Edit");
+        return View(model);
     }
 
 

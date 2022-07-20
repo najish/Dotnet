@@ -35,7 +35,7 @@ public class AccountController : Controller
     {
         if(!ModelState.IsValid)
         {
-            ModelState.AddModelError("","enter valid credential");
+            ModelState.AddModelError("","Please fill the form correctly");
             return View(model);
         }
 
@@ -54,6 +54,7 @@ public class AccountController : Controller
             {
                 return RedirectToAction("UserList");
             }
+            ModelState.AddModelError("","Failed to login");
         }
         return View(model);
     }
@@ -75,15 +76,25 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> DeleteUser(IdentityUser model)
     {
-        var user = await userManager.FindByIdAsync(model.Id);
-        if(user == null)
+
+        if(ModelState.IsValid)
         {
-            ModelState.AddModelError("","Invalid User");
-            return View(model);
+            var user = await userManager.FindByIdAsync(model.Id);
+            if(user == null)
+            {
+                ModelState.AddModelError("","Invalid User");
+                return View(model);
+            }
+            var result = await userManager.DeleteAsync(user);
+            if(result.Succeeded)
+                return RedirectToAction("UserList");
+
+            foreach(var error in result.Errors)
+            {
+                ModelState.AddModelError("",error.Description);
+            }
         }
-        var result = await userManager.DeleteAsync(user);
-        if(result.Succeeded)
-            return RedirectToAction("UserList");
+        ModelState.AddModelError("","Please fill form correctly");
         return View(model);
     }
 
@@ -101,21 +112,26 @@ public class AccountController : Controller
     [AllowAnonymous]
     public async Task<IActionResult> Login(LoginViewModel model,string returnUrl)
     {
-        var user = await userManager.FindByEmailAsync(model.Email);
-        if(user == null)
+        if(ModelState.IsValid)
         {
-            ModelState.AddModelError("","Invalid username");
-            return View(model);
+            var user = await userManager.FindByEmailAsync(model.Email);
+            if(user == null)
+            {
+                ModelState.AddModelError("","Invalid username");
+                return View(model);
+            }
+            var result = await signInManager.PasswordSignInAsync(user,model.Password,model.RememberMe,false);
+            if(result.Succeeded)
+            {
+                if(Url.IsLocalUrl(returnUrl))
+                    return Redirect(returnUrl);
+                return RedirectToAction("GetStudents","Student");
+            }
+            
+            ModelState.AddModelError("","Wrong credential try again");
         }
-
-        var result = await signInManager.PasswordSignInAsync(user,model.Password,model.RememberMe,false);
-        if(result.Succeeded)
-        {
-            if(Url.IsLocalUrl(returnUrl))
-                return Redirect(returnUrl);
-            return RedirectToAction("GetStudents","Student");
-        }
-        ModelState.AddModelError("","Password is wrong try again :-)");
+        
+        ModelState.AddModelError("","Please fill form correctly");
         return View(model);
     }
 
@@ -141,104 +157,206 @@ public class AccountController : Controller
     [HttpGet]
     public async Task<IActionResult> EditUser(string id)
     {
+        
+        EditUserViewModel model = new EditUserViewModel();
         var user = await userManager.FindByIdAsync(id);
-        var roles = await (roleManager.Roles).ToListAsync();
-        var list = new List<string>();
-        // foreach(var role in roles)
-        // {
-        //     list.Add(role.Name);
-        // }
-        var enroll = new List<bool>();
-
-
-        for(int i = 0; i < roles.Count; i++)
+        if(user == null)
         {
-            list.Add(roles[i].Name);
-            var result = await userManager.IsInRoleAsync(user,roles[i].Name); 
-            enroll.Add(result);
+            ModelState.AddModelError("","Unable to Find User");
         }
-        
-
-        
-        var model = new EditUserViewModel
+        else
         {
-            User = user,
-            Roles = list,
-            EnrolledRoles = enroll
-        };
+            model = new EditUserViewModel
+            {
+                User = user,
+            };
+        }
         return View(model);
     }
+
+
+    // [HttpPost]
+    // public async Task<IActionResult> EditUser(EditUserViewModel model)
+    // {
+
+    //     if(ModelState.IsValid)
+    //     {
+
+    //         var user = await userManager.FindByIdAsync(model.User.Id);
+    //         if(user == null)
+    //         {   
+    //             ModelState.AddModelError("","user not found");
+    //             return View(model);
+    //         }
+
+    //         user.Email = model.User.Email;
+    //         user.UserName = model.User.UserName;
+
+    //         var result = await userManager.UpdateAsync(user);
+
+    //         var roles = await (roleManager.Roles).ToListAsync();
+    //         var roleString = new List<string>();
+    //         roles.ForEach(x => roleString.Add(x.Name));
+
+    //         if(result.Succeeded)
+    //         {
+
+    //             for(int i = 0; i < model.EnrolledRoles.Count; i++)
+    //             {
+    //                 var res = await userManager.IsInRoleAsync(user,roleString[i]);
+
+    //                 if(res == true && model.EnrolledRoles[i] == false)
+    //                 {
+    //                     var r = await userManager.RemoveFromRoleAsync(user,roleString[i]);
+    //                     if(r.Succeeded)
+    //                         continue;
+                        
+    //                     foreach(var error in r.Errors)
+    //                     {
+    //                         ModelState.AddModelError("",error.Description);
+    //                     }
+    //                 }
+    //                 else if(res == false && model.EnrolledRoles[i] == true)
+    //                 {
+    //                     var r = await userManager.AddToRoleAsync(user,roleString[i]);
+
+
+    //                     if(r.Succeeded)
+    //                         continue;
+                        
+    //                     foreach(var error in r.Errors)
+    //                     {
+    //                         ModelState.AddModelError("",error.Description);
+    //                     }
+    //                 }
+    //             }
+    //             return RedirectToAction("UserList");
+    //         }
+
+    //         foreach(var error in result.Errors)
+    //         {
+    //             ModelState.AddModelError("",error.Description);
+    //         }
+    //     }
+
+
+    //     ModelState.AddModelError("","Please Fill form correctly");
+    //     if(model.EnrolledRoles == null)
+    //     {
+    //         model.EnrolledRoles = new List<bool>();
+            
+    //     }
+    //     if(model.Roles == null)
+    //     {
+    //         model.Roles = new List<string>();
+    //     }
+    //     return View(model);
+    // }
 
 
     [HttpPost]
     public async Task<IActionResult> EditUser(EditUserViewModel model)
     {
-        var user = await userManager.FindByIdAsync(model.User.Id);
-
-
-        if(user == null)
-        {   
-            ModelState.AddModelError("","user not found");
-            return View(model);
-        }
-        user.Email = model.User.Email;
-        user.UserName = model.User.UserName;
-        var reuslt = await userManager.UpdateAsync(user);
-        var roles = await (roleManager.Roles).ToListAsync();
-
-        var roleString = new List<string>();
-
-        roles.ForEach(x => roleString.Add(x.Name));
-        if(reuslt.Succeeded)
+        if(ModelState.IsValid)
         {
-
-            for(int i = 0; i < model.EnrolledRoles.Count; i++)
+            var user = await userManager.FindByIdAsync(model.User.Id);
+            if(user == null)
+                ModelState.AddModelError("","Unable to find user");
+            else
             {
-                var res = await userManager.IsInRoleAsync(user,roleString[i]);
+                user.Email = model.User.Email;
+                user.UserName = model.User.UserName;
+                var result = await userManager.UpdateAsync(user);
 
-                if(res == true && model.EnrolledRoles[i] == false)
-                {
-                    var r = await userManager.RemoveFromRoleAsync(user,roleString[i]);
-                    if(r.Succeeded)
-                        continue;
-                    
-                    foreach(var error in r.Errors)
-                    {
-                        ModelState.AddModelError("",error.Description);
-                    }
-                }
-                else if(res == false && model.EnrolledRoles[i] == true)
-                {
-                    var r = await userManager.AddToRoleAsync(user,roleString[i]);
-
-
-                    if(r.Succeeded)
-                        continue;
-                    
-                    foreach(var error in r.Errors)
-                    {
-                        ModelState.AddModelError("",error.Description);
-                    }
-                }
+                if(result.Succeeded)
+                    return RedirectToAction("UserList");
+                ModelState.AddModelError("","Failed to Update User");
+                return View(model);
             }
-            return RedirectToAction("UserList");
+
         }
-
-        foreach(var error in reuslt.Errors)
-        {
-            ModelState.AddModelError("",error.Description);
-            if(model.EnrolledRoles == null)
-            {
-                model.EnrolledRoles = new List<bool>();
-                
-            }
-            if(model.Roles == null)
-            {
-                model.Roles = new List<string>();
-            }
-        }
+        ModelState.AddModelError("","Please fill form correctly");        
         return View(model);
     }
 
 
+    [HttpGet]
+    public async Task<IActionResult> UpdateRoles(string userId)
+    {
+        var user = await userManager.FindByIdAsync(userId);
+        UpdateRolesViewModel model = new UpdateRolesViewModel();
+        if(user == null)
+        {
+            ModelState.AddModelError("","Unable to find user");
+        }
+        else
+        {
+            var roles = await roleManager.Roles.ToListAsync();
+            var roleNames = new List<string>();
+            var list = new List<bool>();
+            // roles.ForEach(async x => 
+            // {
+            //     roleNames.Add(x.Name);
+            //     var result = await userManager.IsInRoleAsync(user,x.Name);
+            //     list.Add(result);
+            // });
+
+            for(int i = 0; i < roles.Count; i++)
+            {
+                roleNames.Add(roles[i].Name);
+                var result = await userManager.IsInRoleAsync(user,roles[i].Name);
+                list.Add(result);
+            }
+            model = new UpdateRolesViewModel
+            {
+                User = user,
+                RoleName = roleNames,
+                EnrolledUser = list
+            };
+
+        }
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> UpdateRoles(UpdateRolesViewModel model,string id)
+    {
+        var user = await userManager.FindByIdAsync(id);
+        if(user == null)
+        {
+            ModelState.AddModelError("","Unable to find user");
+            return View(model);
+        }
+        var roleName = await roleManager.Roles.ToListAsync();
+        for(int i = 0; i < roleName.Count; i++)
+        {
+            var result = await userManager.IsInRoleAsync(user,roleName[i].Name);
+
+            if(result && model.EnrolledUser[i] == false)
+            {
+                var r = await userManager.RemoveFromRoleAsync(user,roleName[i].Name);
+                if(r.Succeeded)
+                {
+                    continue;
+                }
+                foreach(var error in r.Errors)
+                {
+                    ModelState.AddModelError("",error.Description);
+                }
+            }
+            else if(result == false && model.EnrolledUser[i])
+            {
+                var r = await userManager.AddToRoleAsync(user,roleName[i].Name);
+                if(r.Succeeded)
+                    continue;
+                foreach(var error in r.Errors)
+                {
+                    ModelState.AddModelError("",error.Description);
+                }
+            }
+        }
+        return RedirectToAction("UserList");
+    }
 }
+
+
