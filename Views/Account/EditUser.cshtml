@@ -1,0 +1,38 @@
+@model IdentityUser
+
+
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+
+<h1>Edit User</h1>
+
+
+<form method="post">
+    <div asp-validation-summary="All">
+        <div>
+            <label asp-for="@Model.Id"></label>
+            <input asp-for="@Model.Id" readonly>
+        </div>
+        <div>
+            <label asp-for="@Model.Email"></label>
+            <input asp-for="@Model.Email">
+            <span asp-validation-for="@Model.Email"></span>
+        </div>
+        <div>
+            <label asp-for="@Model.UserName"></label>
+            <input asp-for="@Model.UserName">
+            <span asp-validation-for="@Model.UserName"></span>
+        </div>
+        <div>
+            <input type="submit" class="btn btn-primary" value="Edit User">
+            <a class="btn btn-dark" asp-action="UserList">Cancel</a>
+        </div>
+
+    </div>
+</form>
+
+<div>
+    <a href="#">Change Password</a>
+</div>

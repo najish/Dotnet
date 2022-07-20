@@ -16318,6 +16318,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "f:\\Dotnet\\Views\\Account\\UserList.cshtml",
+      "TargetPath": "Views\\Account\\UserList.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "f:\\Dotnet\\Views\\Home\\Index.cshtml",
       "TargetPath": "Views\\Home\\Index.cshtml",
       "FileKind": "mvc"
@@ -16325,6 +16330,11 @@
     {
       "FilePath": "f:\\Dotnet\\Views\\Student\\GetStudents.cshtml",
       "TargetPath": "Views\\Student\\GetStudents.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "f:\\Dotnet\\Views\\Account\\DeleteUser.cshtml",
+      "TargetPath": "Views\\Account\\DeleteUser.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -16350,6 +16360,11 @@
     {
       "FilePath": "f:\\Dotnet\\Views\\Student\\Add.cshtml",
       "TargetPath": "Views\\Student\\Add.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "f:\\Dotnet\\Views\\Account\\EditUser.cshtml",
+      "TargetPath": "Views\\Account\\EditUser.cshtml",
       "FileKind": "mvc"
     },
     {

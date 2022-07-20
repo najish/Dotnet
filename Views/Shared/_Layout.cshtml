@@ -25,6 +25,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="GetStudents">Student</a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="UserList">Account</a>
+                        </li>
+
                         @if(signInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">

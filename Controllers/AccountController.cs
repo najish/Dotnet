@@ -1,6 +1,7 @@
 using Dotnet.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dotnet.Controllers;
 
@@ -44,9 +45,38 @@ public class AccountController : Controller
             var signResult = await signInManager.PasswordSignInAsync(user,model.Password,false,false);
             if(signResult.Succeeded)
             {
-                return RedirectToAction("GetStudents","Student");
+                return RedirectToAction("UserList");
             }
         }
+        return View(model);
+    }
+
+
+    [HttpGet]
+    public async Task<IActionResult> DeleteUser(string id)
+    {
+        var user = await userManager.FindByIdAsync(id);
+        if(user == null)
+        {
+            ModelState.AddModelError("","Invalid User");
+            return View(user);
+        }
+
+        return View(user);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteUser(IdentityUser model)
+    {
+        var user = await userManager.FindByIdAsync(model.Id);
+        if(user == null)
+        {
+            ModelState.AddModelError("","Invalid User");
+            return View(model);
+        }
+        var result = await userManager.DeleteAsync(user);
+        if(result.Succeeded)
+            return RedirectToAction("UserList");
         return View(model);
     }
 
@@ -83,11 +113,45 @@ public class AccountController : Controller
         return RedirectToAction("GetStudents","Student");
     }
 
+    [HttpGet]
+    public async Task<IActionResult> UserList()
+    {
+        var list = await userManager.Users.ToListAsync();
+        var model = new UserListViewModel
+        {
+            List = list
+        };
+        return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> EditUser(string id)
+    {
+        var user = await userManager.FindByIdAsync(id);
+
+        return View(user);
+    }
+
+
+    [HttpPost]
+    public async Task<IActionResult> EditUser(IdentityUser model)
+    {
+        var user = await userManager.FindByIdAsync(model.Id);
+
+
+        if(user == null)
+            return View(user);
+        user.Email = model.Email;
+        user.UserName = model.UserName;
+        await userManager.UpdateAsync(user);
+        return RedirectToAction("UserList");
+    }
+
 
     [HttpGet]
     public async Task<IActionResult> ForgetPassword()
     {
-        
+
         return View();
     }
 }

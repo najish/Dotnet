@@ -1,5 +1,6 @@
 using Dotnet.Data;
 using Dotnet.Repository;
+using Dotnet.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,8 @@ services.AddIdentity<IdentityUser,IdentityRole>(options =>
 {
 }).AddEntityFrameworkStores<AppDbContext>();
 services.AddScoped<IStudentRepository,StudentRepository>();
+services.AddTransient<IEmailSender,MessageServices>();
+services.AddTransient<ISmsSender,MessageServices>();
 
 var app = builder.Build();
 
