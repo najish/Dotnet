@@ -172,32 +172,42 @@ public class AccountController : Controller
         user.Email = model.User.Email;
         user.UserName = model.User.UserName;
         var reuslt = await userManager.UpdateAsync(user);
+        var roles = await (roleManager.Roles).ToListAsync();
 
+        var roleString = new List<string>();
+
+        roles.ForEach(x => roleString.Add(x.Name));
         if(reuslt.Succeeded)
         {
 
             for(int i = 0; i < model.EnrolledRoles.Count; i++)
             {
-                if(model.EnrolledRoles[i])
-                {
-                    var res = await userManager.IsInRoleAsync(model.User,model.Roles[i]);
-                    if(res)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        var roleResult = await userManager.AddToRoleAsync(model.User,model.Roles[i]);
+                var res = await userManager.IsInRoleAsync(user,roleString[i]);
 
-                        if(roleResult.Succeeded == false)
-                        {
-                            foreach(var error in roleResult.Errors)
-                            {
-                                ModelState.AddModelError("",error.Description);
-                            }
-                        }
+                if(res == true && model.EnrolledRoles[i] == false)
+                {
+                    var r = await userManager.RemoveFromRoleAsync(user,roleString[i]);
+                    if(r.Succeeded)
+                        continue;
+                    
+                    foreach(var error in r.Errors)
+                    {
+                        ModelState.AddModelError("",error.Description);
                     }
-                }                
+                }
+                else if(res == false && model.EnrolledRoles[i] == true)
+                {
+                    var r = await userManager.AddToRoleAsync(user,roleString[i]);
+
+
+                    if(r.Succeeded)
+                        continue;
+                    
+                    foreach(var error in r.Errors)
+                    {
+                        ModelState.AddModelError("",error.Description);
+                    }
+                }
             }
             return RedirectToAction("UserList");
         }
