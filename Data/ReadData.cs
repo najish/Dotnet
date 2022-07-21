@@ -14,10 +14,11 @@ public class ReadData
         for(int i = 1; i < lines.Length; i++)
         {
             string[] data = lines[i].Split(',');
-            string name = data[0];
-            string address = data[1];
+            int id = int.Parse(data[0]);
+            string name = data[1];
+            string address = data[2];
 
-            var student = new Student {Name = name, Address = address};
+            var student = new Student {Name = name, Address = address, Id = id};
             list.Add(student);
         }
         return list;
