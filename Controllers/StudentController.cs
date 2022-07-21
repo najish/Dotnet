@@ -16,13 +16,15 @@ public class StudentController : Controller
     }
 
     [AllowAnonymous]
-    public async Task<IActionResult> GetStudents(string sortOrder)
+    public async Task<IActionResult> GetStudents(string sortOrder,string searchString)
     {
         ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
         ViewData["AddressSortParm"] = String.IsNullOrEmpty(sortOrder) ? "address_desc" : "";
         ViewData["IdSortParm"] = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
+        ViewData["CurrentFilter"] = searchString;
         var list = await studentRepo.GetStudentsAsync();
         var students = from student in list
+                       where student.Name.Contains(searchString)
                        select student;
 
         switch(sortOrder)

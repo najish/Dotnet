@@ -9,6 +9,12 @@
 <h5>
     <a asp-action="Add">Create Student</a>
 </h5>
+<div>
+    <form method="get">
+        Find By Name : <input type="text" placeholder="Filter Name" name="searchString" value="@ViewData["CurrentFilter"]">
+        <input type="submit" value="Search" class="btn btn-success">
+    </form>
+</div>
 <table>
     <thead>
         <tr>
