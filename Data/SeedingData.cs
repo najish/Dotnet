@@ -7,7 +7,8 @@ public static class SeedingData
 {
     public static void StudentData(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Student>().HasData(new Student[] 
+        var students = ReadData.StudentData();
+        var moredata = new Student[] 
         {
             new Student
             {
@@ -39,6 +40,9 @@ public static class SeedingData
                 Name = "Bilal Shaeed",
                 Address = "Pakistan"
             }
-        });
+        };
+
+        students.AddRange(moredata);
+        modelBuilder.Entity<Student>().HasData(students.ToArray());
     }
 }
