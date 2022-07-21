@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace Dotnet.Controllers;
 
 
-[Authorize]
 public class AdministrationController : Controller
 {
 

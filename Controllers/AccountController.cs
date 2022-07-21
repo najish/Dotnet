@@ -8,7 +8,6 @@ namespace Dotnet.Controllers;
 
 
 
-[Authorize]
 public class AccountController : Controller
 {
     private readonly UserManager<IdentityUser> userManager;
@@ -124,7 +123,7 @@ public class AccountController : Controller
             var result = await signInManager.PasswordSignInAsync(user,model.Password,model.RememberMe,false);
             if(result.Succeeded)
             {
-                if(string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                if(string.IsNullOrEmpty(returnUrl) == false && Url.IsLocalUrl(returnUrl))
                     return Redirect(returnUrl);
                 return RedirectToAction("GetStudents","Student");
             }
@@ -145,6 +144,7 @@ public class AccountController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UserList()
     {
         var list = await userManager.Users.ToListAsync();

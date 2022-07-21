@@ -1,6 +1,7 @@
 using Dotnet.Data;
 using Dotnet.Repository;
 using Dotnet.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,11 @@ services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuratio
 services.AddIdentity<IdentityUser,IdentityRole>(options => 
 {
 }).AddEntityFrameworkStores<AppDbContext>();
+
+services.AddAuthorization(options => 
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+});
 services.AddScoped<IStudentRepository,StudentRepository>();
 services.AddTransient<IEmailSender,MessageServices>();
 services.AddTransient<ISmsSender,MessageServices>();
@@ -40,6 +46,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Student}/{action=GetStudents}/{id?}");
 
 app.Run();

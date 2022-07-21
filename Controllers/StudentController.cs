@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dotnet.Controllers;
 
-[Authorize]
 public class StudentController : Controller
 {
     private readonly IStudentRepository studentRepo;
