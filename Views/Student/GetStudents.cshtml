@@ -1,4 +1,4 @@
-@model List<StudentViewModel>
+@model IEnumerable<StudentViewModel>
 @{
     ViewData["Title"] = "List of all students";
 }
@@ -12,9 +12,16 @@
 <table>
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Address</th>
+            <th>
+                <a asp-action="GetStudents" asp-route-sortOrder="@ViewData["IdSortParm"]">Id</a>
+            </th>
+            <th>
+                <a asp-action="GetStudents" asp-route-sortOrder="@ViewData["NameSortParm"]">Name</a>
+            </th>
+            <th>
+                <a asp-action="GetStudents" asp-route-sortOrder="@ViewData["AddressSortParm"]">Address</a>
+                
+            </th>
         </tr>
     </thead>
     <tbody>
