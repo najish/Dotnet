@@ -1,6 +1,7 @@
 @model IEnumerable<StudentViewModel>
 @{
     ViewData["Title"] = "List of all students";
+    int page =(int)ViewData["page"];
 }
 
 <h1>List of students</h1>
@@ -45,6 +46,8 @@
                     </td>
                 </tr>
             }
+
+            
         }
         else
         {
@@ -53,3 +56,10 @@
 
     </tbody>
 </table>
+
+
+<div>
+    <a class="btn btn-primary" asp-action="GetStudents" asp-route-page="@(page-1)">Previous</a>
+    <a class="btn btn-success" asp-action="GetStudents" asp-route-page="@(page)">Current</a>
+    <a class="btn btn-primary" asp-action="GetStudents" asp-route-page="@(page+1)">Next</a>
+</div>
