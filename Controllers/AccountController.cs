@@ -102,9 +102,10 @@ public class AccountController : Controller
 
     [HttpGet]
     [AllowAnonymous]
-    public IActionResult Login(string returnUrl)
+    public IActionResult Login(string? returnUrl = null)
     {
-        ViewData["ReturnUrl"] = returnUrl;
+        if(string.IsNullOrEmpty(returnUrl) == false)
+            ViewData["ReturnUrl"] = returnUrl;
         return View();
     }
 
@@ -123,7 +124,7 @@ public class AccountController : Controller
             var result = await signInManager.PasswordSignInAsync(user,model.Password,model.RememberMe,false);
             if(result.Succeeded)
             {
-                if(Url.IsLocalUrl(returnUrl))
+                if(string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                     return Redirect(returnUrl);
                 return RedirectToAction("GetStudents","Student");
             }
