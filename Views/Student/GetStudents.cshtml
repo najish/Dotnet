@@ -59,7 +59,13 @@
 
 
 <div>
-    <a class="btn btn-primary" asp-action="GetStudents" asp-route-page="@(page-1)">Previous</a>
-    <a class="btn btn-success" asp-action="GetStudents" asp-route-page="@(page)">Current</a>
-    <a class="btn btn-primary" asp-action="GetStudents" asp-route-page="@(page+1)">Next</a>
+    <a class="btn btn-primary" asp-action="GetStudents" asp-route-page="@(page-1)">@(page - 1)</a>
+    <a class="btn btn-success" asp-action="GetStudents" asp-route-page="@(page)">@(page)</a>
+    <a class="btn btn-primary" asp-action="GetStudents" asp-route-page="@(page+1)">@(page + 1)</a>
+</div>
+
+
+
+<div>
+    <h1>Hello There</h1>
 </div>
