@@ -11,8 +11,7 @@ public class StudentController : Controller
 {
     private readonly IStudentRepository studentRepo;
     private static int currentPage = 1,LastPage;
-    private const int dataPerPage = 5, FirstPage = 1;
-    private static int totalPage;
+    private const int dataPerPage = 10, FirstPage = 1;
     public StudentController(IStudentRepository studentRepo)
     {
         this.studentRepo = studentRepo;
@@ -20,25 +19,19 @@ public class StudentController : Controller
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> GetStudents(string sortOrder,string searchString,int page = 0)
+    public async Task<IActionResult> GetStudents(string sortOrder,string searchString,int page = 1)
     {
-        ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-        ViewData["AddressSortParm"] = String.IsNullOrEmpty(sortOrder) ? "address_desc" : "";
-        ViewData["IdSortParm"] = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
-        ViewData["CurrentFilter"] = searchString;
         var list = await studentRepo.GetStudentsAsync();
-        var students = from student in list
+        var students = from student in list 
                        select student;
 
-        if(String.IsNullOrEmpty(searchString) == false)
-        {
-            students = students.Where(std => std.Name.Contains(searchString));
-        }
+        
+        ViewData["NameSortParm"] = string.IsNullOrEmpty(searchString) ? "name_desc" : "";
+        ViewData["AddressSortParm"] = string.IsNullOrEmpty(searchString) ? "address_desc" : "";
+
+
         switch(sortOrder)
         {
-            case "id_desc":
-                students = students.OrderByDescending(x=> x.Id);
-                break;
             case "name_desc":
                 students = students.OrderByDescending(x => x.Name);
                 break;
@@ -46,35 +39,44 @@ public class StudentController : Controller
                 students = students.OrderByDescending(x => x.Address);
                 break;
             default:
-                students = students.OrderBy(x => x.Id);
+                students = students.OrderBy(x => x.Name);
                 break;
         }
-        int total = students.Count();
-        LastPage = (int)Math.Floor((total * 1.0 ) / dataPerPage);
-        if(page > currentPage && page <= LastPage)
-        {
-            currentPage = page;
-            students = students.Skip(dataPerPage * page);
-            if(students.Count() >= dataPerPage)
-                students = students.Take(dataPerPage);
-        }
-        else if(page < currentPage && page >= FirstPage)
-        {
-            currentPage = page;
-            students = students.Skip((page-1) * dataPerPage);
-            if(students.Count() >= dataPerPage)
-                students = students.Take(dataPerPage);
-        }
-        else if(page > LastPage)
-        {
-            page = 0;
-        }
-        if(page == 0) page = currentPage;
-        ViewData["page"] = page;
-        currentPage = page;
+        
+        LastPage = (int)Math.Ceiling((list.Count() * 1.0) / dataPerPage);
+        
 
-        if(students.Count() > dataPerPage)
+
+
+
+        if(page <= FirstPage)
+        {
             students = students.Take(dataPerPage);
+            page = currentPage = 1;
+            ViewBag.Page = page;
+        }
+        else if(page >= LastPage)
+        {
+
+            students = students.TakeLast(dataPerPage);
+            page = currentPage = LastPage;
+            ViewBag.Page = page;
+        }
+        else 
+        {
+            if(page < currentPage)
+            {
+                students = students.Skip(dataPerPage * (page - 1)).Take(dataPerPage);
+                ViewBag.Page = currentPage = page;
+            }
+            else 
+            {
+                students = students.Skip(dataPerPage * currentPage).Take(dataPerPage);
+                currentPage = page;
+                ViewBag.Page = currentPage;
+            }
+        }
+       
         return View(students);
     }
 

@@ -1,7 +1,7 @@
 @model IEnumerable<StudentViewModel>
 @{
     ViewData["Title"] = "List of all students";
-    int page =(int)ViewData["page"];
+    int page = ViewBag.Page;
 }
 
 <h1>List of students</h1>
@@ -20,7 +20,7 @@
     <thead>
         <tr>
             <th>
-                <a asp-action="GetStudents" asp-route-sortOrder="@ViewData["IdSortParm"]">Id</a>
+               Id
             </th>
             <th>
                 <a asp-action="GetStudents" asp-route-sortOrder="@ViewData["NameSortParm"]">Name</a>
@@ -58,14 +58,10 @@
 </table>
 
 
-<div>
-    <a class="btn btn-primary" asp-action="GetStudents" asp-route-page="@(page-1)">@(page - 1)</a>
-    <a class="btn btn-success" asp-action="GetStudents" asp-route-page="@(page)">@(page)</a>
-    <a class="btn btn-primary" asp-action="GetStudents" asp-route-page="@(page+1)">@(page + 1)</a>
-</div>
 
+<div class="center-button">
+    <a asp-action="GetStudents" asp-route-page="@(page-1)" class="btn btn-primary">&lt;</a>
+    <a asp-action="GetStudents" asp-route-page="@(page)" class="btn btn-success">@(page)</a>
+    <a asp-action="GetStudents" asp-route-page="@(page+1)" class="btn btn-primary">&gt;</a>
 
-
-<div>
-    <h1>Hello There</h1>
 </div>
