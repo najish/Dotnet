@@ -7,6 +7,8 @@ using System.Linq;
 
 namespace Dotnet.Controllers;
 
+
+[AllowAnonymous]
 public class StudentController : Controller
 {
     private readonly IStudentRepository studentRepo;
@@ -26,20 +28,31 @@ public class StudentController : Controller
                        select student;
 
         
-        ViewData["NameSortParm"] = string.IsNullOrEmpty(searchString) ? "name_desc" : "";
-        ViewData["AddressSortParm"] = string.IsNullOrEmpty(searchString) ? "address_desc" : "";
-
+        
+        ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_asc" : "name_desc";
+        ViewData["AddressSortParm"] = string.IsNullOrEmpty(sortOrder) ? "address_asc" : "address_desc";
+        
 
         switch(sortOrder)
         {
             case "name_desc":
                 students = students.OrderByDescending(x => x.Name);
+                ViewData["NameSortParm"] = "name_asc";
+                break;
+            case "name_asc":
+                students = students.OrderBy(x => x.Name);
+                ViewData["NameSortParm"] = "name_desc";
                 break;
             case "address_desc":
                 students = students.OrderByDescending(x => x.Address);
+                ViewData["AddressSortParm"] = "address_asc";
+                break;
+            case "address_asc":
+                students = students.OrderBy(x => x.Address);
+                ViewData["AddressSortParm"] = "address_desc";
                 break;
             default:
-                students = students.OrderBy(x => x.Name);
+                students = students.OrderBy(x => x.Id);
                 break;
         }
         

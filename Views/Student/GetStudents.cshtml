@@ -20,14 +20,16 @@
     <thead>
         <tr>
             <th>
-               Id
+               <a asp-action="GetStudents" asp-route-sortOrder="@ViewData["Id"]">Id</a>
             </th>
             <th>
                 <a asp-action="GetStudents" asp-route-sortOrder="@ViewData["NameSortParm"]">Name</a>
             </th>
             <th>
                 <a asp-action="GetStudents" asp-route-sortOrder="@ViewData["AddressSortParm"]">Address</a>
-                
+            </th>
+            <th>
+                <a asp-action="GetStudents" asp-route-sortOrder="@ViewData["AddressSortParm"]">Enrollment</a>
             </th>
         </tr>
     </thead>
@@ -40,6 +42,7 @@
                     <td>@student.Id</td>
                     <td>@student.Name</td>
                     <td>@student.Address</td>
+                    <td>@student.Enrollment</td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@student.Id">Edit</a> |
                         <a asp-action="Delete" asp-route-id="@student.Id">Delete</a>

@@ -9,4 +9,6 @@ public class StudentViewModel
     public string? Name {get;set;}
     [Required]
     public string? Address {get;set;}
+    [Required]
+    public DateTime Enrollment {get;set;}
 }

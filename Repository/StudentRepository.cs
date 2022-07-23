@@ -19,7 +19,8 @@ public class StudentRepository : IStudentRepository
         var student = new Student
         {
             Name = model.Name,
-            Address = model.Address
+            Address = model.Address,
+            Enrollment = model.Enrollment
         };
         context.Students.Add(student);
         await context.SaveChangesAsync();
@@ -31,7 +32,7 @@ public class StudentRepository : IStudentRepository
         var list = new List<StudentViewModel>();
         foreach(var student in model)
         {
-            list.Add(new StudentViewModel{ Id = student.Id, Name = student.Name, Address = student.Address});
+            list.Add(new StudentViewModel{ Id = student.Id, Name = student.Name, Address = student.Address,Enrollment = student.Enrollment});
         }
         return list;
     }
@@ -39,7 +40,7 @@ public class StudentRepository : IStudentRepository
     public async Task<StudentViewModel> GetStudentAsync(int id)
     {
         var model = await context.Students.FindAsync(id);
-        var student = new StudentViewModel{Id = model.Id, Name = model.Name, Address = model.Address};
+        var student = new StudentViewModel{Id = model.Id, Name = model.Name, Address = model.Address,Enrollment = model.Enrollment};
         return student;
     }
 
@@ -50,7 +51,8 @@ public class StudentRepository : IStudentRepository
         {
             Id = model.Id,
             Name = model.Name,
-            Address = model.Address
+            Address = model.Address,
+            Enrollment = model.Enrollment
         };
 
         context.Students.Update(student);

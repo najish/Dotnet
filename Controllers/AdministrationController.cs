@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Dotnet.Controllers;
 
-[Authorize(Roles = "Admin")]
+[AllowAnonymous]
 public class AdministrationController : Controller
 {
 

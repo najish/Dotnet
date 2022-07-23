@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dotnet.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220722074637_FewMoreStudent")]
-    partial class FewMoreStudent
+    [Migration("20220723194007_new migration")]
+    partial class newmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,218 +35,15 @@ namespace Dotnet.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("Enrollment")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Students");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 101,
-                            Address = "Delhi",
-                            Name = "Ramesh Kumar"
-                        },
-                        new
-                        {
-                            Id = 102,
-                            Address = "Aurangabad",
-                            Name = "Raja Kumar"
-                        },
-                        new
-                        {
-                            Id = 103,
-                            Address = "Dehri",
-                            Name = "Ramesh Kumar"
-                        },
-                        new
-                        {
-                            Id = 104,
-                            Address = "Gaya",
-                            Name = "Lalita Kumari"
-                        },
-                        new
-                        {
-                            Id = 105,
-                            Address = "Patna",
-                            Name = "Ramesh Kumar"
-                        },
-                        new
-                        {
-                            Id = 106,
-                            Address = "Hyderabad",
-                            Name = "Ramesh Kumar"
-                        },
-                        new
-                        {
-                            Id = 107,
-                            Address = "Chennai",
-                            Name = "Rahim Khan"
-                        },
-                        new
-                        {
-                            Id = 108,
-                            Address = "Orisha",
-                            Name = "Rajesh Khanna"
-                        },
-                        new
-                        {
-                            Id = 109,
-                            Address = "Bihar",
-                            Name = "Sanjay Kumar"
-                        },
-                        new
-                        {
-                            Id = 110,
-                            Address = "Varanashi",
-                            Name = "Ramesh Kumar"
-                        },
-                        new
-                        {
-                            Id = 111,
-                            Address = "Pune",
-                            Name = "Shivam Kumar"
-                        },
-                        new
-                        {
-                            Id = 112,
-                            Address = "Jaipur",
-                            Name = "Ramesh Kumar"
-                        },
-                        new
-                        {
-                            Id = 113,
-                            Address = "Jodhpur",
-                            Name = "Sweety Kumari"
-                        },
-                        new
-                        {
-                            Id = 114,
-                            Address = "Jhansi",
-                            Name = "Sanjay Kumar"
-                        },
-                        new
-                        {
-                            Id = 115,
-                            Address = "Mumbai",
-                            Name = "Mahesh Kumar"
-                        },
-                        new
-                        {
-                            Id = 116,
-                            Address = "Goa",
-                            Name = "Ganesh Kumar"
-                        },
-                        new
-                        {
-                            Id = 117,
-                            Address = "Ranchi",
-                            Name = "Rani Kumari"
-                        },
-                        new
-                        {
-                            Id = 118,
-                            Address = "Deoghar",
-                            Name = "Shivam Kumar"
-                        },
-                        new
-                        {
-                            Id = 119,
-                            Address = "Delhi",
-                            Name = "Suresh Kumar"
-                        },
-                        new
-                        {
-                            Id = 120,
-                            Address = "Delhi",
-                            Name = "Sujeet Kumar"
-                        },
-                        new
-                        {
-                            Id = 121,
-                            Address = "Hyderabad",
-                            Name = "Zafer Ravish"
-                        },
-                        new
-                        {
-                            Id = 123,
-                            Address = "Address 1",
-                            Name = "User 1"
-                        },
-                        new
-                        {
-                            Id = 124,
-                            Address = "Address 2",
-                            Name = "User 2"
-                        },
-                        new
-                        {
-                            Id = 125,
-                            Address = "Address 3",
-                            Name = "User 3"
-                        },
-                        new
-                        {
-                            Id = 126,
-                            Address = "Address 4",
-                            Name = "User 4"
-                        },
-                        new
-                        {
-                            Id = 127,
-                            Address = "Address 5",
-                            Name = "User 5"
-                        },
-                        new
-                        {
-                            Id = 128,
-                            Address = "Address 6",
-                            Name = "User 6"
-                        },
-                        new
-                        {
-                            Id = 129,
-                            Address = "Address 7",
-                            Name = "User 7"
-                        },
-                        new
-                        {
-                            Id = 130,
-                            Address = "Address 8",
-                            Name = "User 8"
-                        },
-                        new
-                        {
-                            Id = 1,
-                            Address = "Rajabagicha",
-                            Name = "Najish Eqbal"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Address = "Daudnagar",
-                            Name = "Danish Eqbal"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Address = "Ranchi",
-                            Name = "Yasin Ekbal"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Address = "MaharajGanj",
-                            Name = "Taukir Khan"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Address = "Pakistan",
-                            Name = "Bilal Shaeed"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

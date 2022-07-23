@@ -18,6 +18,12 @@
         </div>
 
         <div>
+            <label asp-for="Enrollment"></label>
+            <input asp-for="Enrollment">
+            <span asp-validation-for="Enrollment"></span>
+        </div>
+
+        <div>
             <input type="submit" value="Add Student" class="btn btn-primary">
             <button class="btn btn-dark" asp-action="GetStudents">Cancel</button>
         </div>

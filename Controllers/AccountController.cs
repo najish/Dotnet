@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Dotnet.Controllers;
 
 
-
+[AllowAnonymous]
 public class AccountController : Controller
 {
     private readonly UserManager<IdentityUser> userManager;
