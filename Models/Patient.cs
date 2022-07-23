@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Dotnet.models;
+namespace Dotnet.Models;
 
 public enum Status
 {
@@ -25,4 +25,7 @@ public class Patient
     [Required]
     [MinLength(10),MaxLength(500)]
     public string Description {get;set;}
+
+    [Required]
+    public string Number {get;set;}
 }

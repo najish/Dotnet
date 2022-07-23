@@ -12,6 +12,9 @@ public class AppDbContext : IdentityDbContext
     }
 
     public DbSet<Student> Students {get;set;}
+    public DbSet<Patient> Patients {get;set;}
+    public DbSet<Doctor> Doctors {get;set;}
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
