@@ -12,26 +12,62 @@ namespace Dotnet.Controllers;
 public class StudentController : Controller
 {
     private readonly IStudentRepository studentRepo;
+    private readonly ILogger<StudentController> logger;
     private static int currentPage = 1,LastPage;
     private const int dataPerPage = 10, FirstPage = 1;
-    public StudentController(IStudentRepository studentRepo)
+    public StudentController(IStudentRepository studentRepo,ILogger<StudentController> logger)
     {
         this.studentRepo = studentRepo;
+        this.logger = logger;
     }
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> GetStudents(string sortOrder,string searchString,int page = 1)
+    public async Task<IActionResult> GetStudents(string sortOrder,string searchString,string searchBy,int page = 1)
     {
         var list = await studentRepo.GetStudentsAsync();
-        var students = from student in list 
-                       select student;
+        var newList = new List<StudentViewModel>();
+        if(string.IsNullOrEmpty(searchBy) == false && string.IsNullOrEmpty(searchString) == false)
+        {
+            switch(searchBy)
+            {
+                case "Name":
+                    list.ForEach(std => 
+                    {
+                        var result = std.Name.Contains(searchString);
+                        if(result)
+                            newList.Add(std);
+                    });
 
+                    break;
+                case "Address":
+                    list.ForEach(std => 
+                    {
+                        var result = std.Address.Contains(searchString);
+                        if(result)
+                            newList.Add(std);
+                    });
+                    break;
+                
+            }
+        }
+        IEnumerable<StudentViewModel> students;
+        if(newList.Count > 0)
+        {
+            students = from student in newList
+                            select student;
+        }
+        else
+        {
+            students = from student in list 
+                select student;
+        }
         
         
         ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_asc" : "name_desc";
         ViewData["AddressSortParm"] = string.IsNullOrEmpty(sortOrder) ? "address_asc" : "address_desc";
-        
+        ViewData["EnrollSortParm"] = string.IsNullOrEmpty(sortOrder) ? "enroll_asc" : "enroll_desc";
+
 
         switch(sortOrder)
         {
@@ -50,6 +86,15 @@ public class StudentController : Controller
             case "address_asc":
                 students = students.OrderBy(x => x.Address);
                 ViewData["AddressSortParm"] = "address_desc";
+                break;
+
+            case "enroll_asc":
+                students = students.OrderByDescending(x => x.Enrollment);
+                ViewData["AddressSortParm"] = "address_desc";
+                break;
+            case "enroll_desc":
+                students = students.OrderBy(x => x.Enrollment);
+                ViewData["AddressSortParm"] = "address_asc";
                 break;
             default:
                 students = students.OrderBy(x => x.Id);
@@ -89,7 +134,21 @@ public class StudentController : Controller
                 ViewBag.Page = currentPage;
             }
         }
-       
+        if(string.IsNullOrEmpty(searchBy) && string.IsNullOrEmpty(searchString))    
+        {
+            switch(searchBy)
+            {
+                case "Id":
+                    
+                    break;
+                case "Name":
+                    break;
+                case "Address":
+                    break;
+                case "Enrollment":
+                    break;
+            }
+        }
         return View(students);
     }
 

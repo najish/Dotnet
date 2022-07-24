@@ -12,12 +12,14 @@
 </h5>
 <div>
     <form method="get">
-        Find By <label for="dropdown" name="searchString"/>
-                <option>
-                    <select value="Name">Name</select>
-                    <select value="Address">Address</select>
-                    <select value="Enrollment">Enrollment</select>
-                </option> : <input type="text" placeholder="Filter Name" name="searchString" value="@ViewData["CurrentFilter"]">
+        Find By
+         <select name="searchBy">
+            <option value="Id">Id</option>
+            <option value="Name">Name</option>
+            <option value="Address">Address</option>
+            <option value="Enrollment">Enrollment</option>
+        </select>
+        <input type="text" placeholder="Filter Name" name="searchString" value="@ViewData["CurrentFilter"]">
         <input type="submit" value="Search" class="btn btn-success">
     </form>
 </div>
@@ -34,7 +36,7 @@
                 <a asp-action="GetStudents" asp-route-sortOrder="@ViewData["AddressSortParm"]">Address</a>
             </th>
             <th>
-                <a asp-action="GetStudents" asp-route-sortOrder="@ViewData["AddressSortParm"]">Enrollment</a>
+                <a asp-action="GetStudents" asp-route-sortOrder="@ViewData["EnrollSortParm"]">Enrollment</a>
             </th>
         </tr>
     </thead>
@@ -73,3 +75,5 @@
     <a asp-action="GetStudents" asp-route-page="@(page+1)" class="btn btn-primary">&gt;</a>
 
 </div>
+
+
