@@ -1,6 +1,31 @@
-﻿@{
+﻿@model AnotherStudentViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
+
+<form method="post">
+    <div>
+        <label asp-for="@Model.Student.Name"></label>
+        <input asp-for="@Model.Student.Name">
+    </div>
+
+    <div>
+        <label asp-for="@Model.Student.Address"></label>
+        <input asp-for="@Model.Student.Address">
+    </div>
+
+    <div>
+        <label asp-for="Doctor.Name"></label>
+        <input asp-for="Doctor.Name">
+    </div>
+
+    <div>
+        <input type="submit" value="submit">
+    </div>
+</form>
+
+
+
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>

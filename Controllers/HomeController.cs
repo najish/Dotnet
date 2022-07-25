@@ -1,9 +1,12 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Dotnet.Models;
+using Microsoft.AspNetCore.Authorization;
+using Dotnet.ViewModels;
 
 namespace Dotnet.Controllers;
 
+[AllowAnonymous]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -13,9 +16,22 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+
+    [HttpPost]
+    public IActionResult Index(AnotherStudentViewModel model)
+    {
+        return Index();
+    }
     public IActionResult Index()
     {
-        return View();
+        var model = new AnotherStudentViewModel();
+        if(model.Student is null)
+        {
+            _logger.LogInformation("student property is null");
+        }
+        else
+            _logger.LogInformation("student perperty is not null");
+        return View(model);
     }
 
     public IActionResult Privacy()
